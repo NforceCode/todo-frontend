@@ -3,8 +3,11 @@ import React from 'react';
 
 const TaskCreation = () => {
   return (
-    <TaskForm />
+    <>
+      <h1>Create task</h1>
+      <TaskForm />
+    </>
   );
-}
+};
 
 export default TaskCreation;

@@ -5,8 +5,7 @@ import {
   NavLink,
 } from 'react-router-dom';
 import { Suspense, lazy } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import styles from'./App.module.scss';
 
 const Home = lazy(() => import('./pages/Home'));
 const TaskCreation = lazy(() => import('./pages/TaskCreation'));
@@ -14,21 +13,21 @@ const Tasks = lazy(() => import('./pages/Tasks'));
 
 function App () {
   return (
-    <div className='App'>
+    <div className={styles.App}>
       <Router>
-        <ul className='nav-ul'>
-          <li className='nav-item'>
+        <ul className={styles.navUl}>
+          <li className={styles.navItem}>
             <NavLink to='/'>Home</NavLink>
           </li>
-          <li className='nav-item'>
+          <li className={styles.navItem}>
             <NavLink to='/addtask'>Add task</NavLink>
           </li>
-          <li className='nav-item'>
+          <li className={styles.navItem}>
             <NavLink to='/tasks'>Your tasks</NavLink>
           </li>
         </ul>
         <Suspense fallback={'App is loading...'}>
-          <Switch>
+          <Switch className={styles.centered}>
             <Route exact path='/' component={Home} />
             <Route path='/addtask' component={TaskCreation} />
             <Route path='/tasks' component={Tasks} />

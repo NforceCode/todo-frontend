@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import * as TaskCreators from 'actions/taskCreators';
 import Task from 'components/Task';
 import { useEffect } from 'react';
+import styles from './TaskLoader.module.scss';
 
 const TaskLoader = props => {
   const {
@@ -14,7 +15,9 @@ const TaskLoader = props => {
   } = props;
 
   useEffect(() => {
-    loadMoreTasks();
+    if(!tasks.length) {
+      loadMoreTasks();
+    }
     return () => {};
   }, []);
 
@@ -28,11 +31,11 @@ const TaskLoader = props => {
   };
 
   return (
-    <div>
+    <div className={styles.container}>
       <h1>Current tasks</h1>
       {isFetching && 'Loading...'}
       {error && JSON.stringify(error.message)}
-      <ul>
+      <ul className={styles.taskList}>
         {tasks.map(task => (
           <Task
             key={task.id}
