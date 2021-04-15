@@ -1,23 +1,40 @@
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  NavLink,
+} from 'react-router-dom';
+import { Suspense, lazy } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-function App() {
+const Home = lazy(() => import('./pages/Home'));
+const TaskCreation = lazy(() => import('./pages/TaskCreation'));
+const Tasks = lazy(() => import('./pages/Tasks'));
+
+function App () {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      <Router>
+        <ul className='nav-ul'>
+          <li className='nav-item'>
+            <NavLink to='/'>Home</NavLink>
+          </li>
+          <li className='nav-item'>
+            <NavLink to='/addtask'>Add task</NavLink>
+          </li>
+          <li className='nav-item'>
+            <NavLink to='/tasks'>Your tasks</NavLink>
+          </li>
+        </ul>
+        <Suspense fallback={'App is loading...'}>
+          <Switch>
+            <Route exact path='/' component={Home} />
+            <Route path='/addtask' component={TaskCreation} />
+            <Route path='/tasks' component={Tasks} />
+          </Switch>
+        </Suspense>
+      </Router>
     </div>
   );
 }
