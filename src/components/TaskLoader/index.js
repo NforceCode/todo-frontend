@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import * as TaskCreators from 'actions/taskCreators';
-import TaskLi from './TaskLi';
+import Task from 'components/Task';
 import { useEffect } from 'react';
 
 const TaskLoader = props => {
@@ -34,7 +34,7 @@ const TaskLoader = props => {
       {error && JSON.stringify(error.message)}
       <ul>
         {tasks.map(task => (
-          <TaskLi
+          <Task
             key={task.id}
             task={task}
             toggleTask={toggleTask}

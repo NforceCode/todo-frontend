@@ -1,4 +1,4 @@
-import TaskForm from 'components/TaskForm';
+import TaskForm from 'components/TaskForm/index';
 import React from 'react';
 
 const TaskCreation = () => {

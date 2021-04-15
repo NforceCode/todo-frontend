@@ -1,4 +1,4 @@
-import TaskLoader from 'components/TaskLoader';
+import TaskLoader from 'components/TaskLoader/index';
 import React from 'react';
 
 const Tasks = () => {
