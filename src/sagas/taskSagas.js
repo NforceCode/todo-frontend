@@ -1,7 +1,6 @@
 import { put } from 'redux-saga/effects';
 import * as API from 'api';
 import * as taskActionCreators from 'actions/taskCreators';
-import ACTION_TYPES from 'actions/actionTypes';
 
 export function * getTasksSaga (action) {
   try {
