@@ -1,33 +1,34 @@
-import { connect } from 'react-redux';
-import * as TaskCreators from 'actions/taskCreators';
+import { useDispatch, useSelector } from 'react-redux';
+import * as ActionCreators from 'actions/taskCreators';
 import Task from 'components/Task';
 import { useEffect } from 'react';
+import { bindActionCreators } from 'redux';
 import styles from './TaskLoader.module.scss';
 
 const TaskLoader = props => {
+  const dispatch = useDispatch();
+  const { tasks, isFetching, error } = useSelector(({ task }) => task);
+
   const {
-    tasks,
-    isFetching,
-    error,
-    getTaskAction,
-    updateTaskAction,
-    deleteTaskAction,
-  } = props;
+    getTasksRequest,
+    updateTaskRequest,
+    deleteTaskRequest,
+  } = bindActionCreators(ActionCreators, dispatch);
 
   useEffect(() => {
-    if(!tasks.length) {
+    if (!tasks.length) {
       loadMoreTasks();
     }
     return () => {};
   }, []);
 
-  const loadMoreTasks = () => getTaskAction({ offset: tasks.length });
+  const loadMoreTasks = () => getTasksRequest({ offset: tasks.length });
 
   const toggleTask = ({ target: { checked } }, id) => {
-    updateTaskAction({ id, taskData: { isDone: checked } });
+    updateTaskRequest({ id, taskData: { isDone: checked } });
   };
   const changeDeadline = ({ target: { value } }, id) => {
-    updateTaskAction({ id, taskData: { deadline: value } });
+    updateTaskRequest({ id, taskData: { deadline: value } });
   };
 
   return (
@@ -42,7 +43,7 @@ const TaskLoader = props => {
             task={task}
             toggleTask={toggleTask}
             changeDeadline={changeDeadline}
-            deleteTaskAction={deleteTaskAction}
+            deleteTaskAction={deleteTaskRequest}
           />
         ))}
       </ul>
@@ -51,18 +52,4 @@ const TaskLoader = props => {
   );
 };
 
-const mapStateToProps = ({ tasks, isFetching, error }) => ({
-  tasks,
-  isFetching,
-  error,
-});
-const mapDispatchToProps = dispatch => ({
-  getTaskAction: ({ limit, offset }) =>
-    dispatch(TaskCreators.getTasksRequest({ limit, offset })),
-  updateTaskAction: ({ id, taskData }) =>
-    dispatch(TaskCreators.updateTaskRequest({ id, taskData })),
-  deleteTaskAction: ({ id }) =>
-    dispatch(TaskCreators.deleteTaskRequest({ id })),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(TaskLoader);
+export default TaskLoader;
