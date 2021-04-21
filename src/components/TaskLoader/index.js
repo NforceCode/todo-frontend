@@ -39,7 +39,6 @@ const TaskLoader = props => {
   const taskQueryControls = ({ pageNumber, newLimit }) => {
     const { page = 1, limit = 5 } = search;
     const newPage = Number(page) + pageNumber;
-    console.log(newLimit);
 
     history.push(
       `/tasks?${qs.stringify({
