@@ -1,9 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
 import * as ActionCreators from 'actions/taskCreators';
 import Task from 'components/Task';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { bindActionCreators } from 'redux';
+import { useLocation, useHistory } from 'react-router-dom';
+import qs from 'query-string';
 import styles from './TaskLoader.module.scss';
+import LoaderControls from './LoaderControls';
 
 const TaskLoader = props => {
   const dispatch = useDispatch();
@@ -15,20 +18,37 @@ const TaskLoader = props => {
     deleteTaskRequest,
   } = bindActionCreators(ActionCreators, dispatch);
 
-  useEffect(() => {
-    if (!tasks.length) {
-      loadMoreTasks();
-    }
-    return () => {};
-  }, []);
+  const location = useLocation();
+  const history = useHistory();
+  const [search, setSearch] = useState(qs.parse(location.search));
 
-  const loadMoreTasks = () => getTasksRequest({ offset: tasks.length });
+  useEffect(() => {
+    setSearch(qs.parse(location.search));
+  }, [location.search]);
+
+  useEffect(() => {
+    getTasksRequest(search);
+  }, [search]);
 
   const toggleTask = ({ target: { checked } }, id) => {
     updateTaskRequest({ id, taskData: { isDone: checked } });
   };
   const changeDeadline = ({ target: { value } }, id) => {
     updateTaskRequest({ id, taskData: { deadline: value } });
+  };
+  const taskQueryControls = ({ pageNumber, newLimit }) => {
+    const { page = 1, limit = 5 } = search;
+    const newPage = Number(page) + pageNumber;
+    console.log(newLimit);
+
+    history.push(
+      `/tasks?${qs.stringify({
+        page: newPage? newPage: page,
+        limit: newLimit ? newLimit : limit,
+      })}`
+    );
+
+    setSearch(qs.parse(location.search));
   };
 
   return (
@@ -47,7 +67,7 @@ const TaskLoader = props => {
           />
         ))}
       </ul>
-      <button onClick={loadMoreTasks}>Load more tasks</button>
+      <LoaderControls search={search} taskQueryControls={taskQueryControls}/>
     </div>
   );
 };

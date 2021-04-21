@@ -17,9 +17,9 @@ export const createTaskError = ({ error }) => ({
 });
 
 // GET
-export const getTasksRequest = ({ limit, offset }) => ({
+export const getTasksRequest = ({ limit, page }) => ({
   type: ACTION_TYPES.GET_TASKS_REQUEST,
-  payload: { limit, offset },
+  payload: { limit, page },
 });
 
 export const getTasksSucess = ({ tasks }) => ({

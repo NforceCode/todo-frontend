@@ -44,7 +44,7 @@ const handlers = {
     } = action;
     draftState.isFetching = false;
     draftState.error = null;
-    draftState.tasks.push(...tasks);
+    draftState.tasks = tasks;
   }),
   [ACTION_TYPES.UPDATE_TASK_SUCCESS]: produce((draftState, action) => {
     const {

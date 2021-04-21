@@ -3,8 +3,8 @@ import queryString from 'query-string';
 
 const httpClient = axios.create({ baseURL: 'http://localhost:5000/api' });
 
-export const getTasks = ({ offset = 0, limit = 5 } = {}) =>
-  httpClient.get(`/tasks?${queryString.stringify({ offset, limit })}`);
+export const getTasks = ({ page = 1, limit = 5 }) => 
+  httpClient.get(`/tasks?${queryString.stringify({ page, limit })}`);
 
 export const createTask = ({ taskData }) => httpClient.post(`/tasks`, taskData);
 export const updateTask = ({ id, taskData }) =>
