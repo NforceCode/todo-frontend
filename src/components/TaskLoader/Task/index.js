@@ -4,10 +4,16 @@ import styles from './Task.module.scss';
 const Task = props => {
   const {
     task: { id, body, isDone, deadline },
-    toggleTask,
-    changeDeadline,
-    deleteTaskAction,
+    updateTask,
+    deleteTask,
   } = props;
+
+  const toggleTask = ({ target: { checked } }, id) => {
+    updateTask({ id, taskData: { isDone: checked } });
+  };
+  const changeDeadline = ({ target: { value } }, id) => {
+    updateTask({ id, taskData: { deadline: value } });
+  };
   return (
     <li className={styles.container}>
       <h3>{body}</h3>
@@ -36,7 +42,7 @@ const Task = props => {
       <button
         className={styles.btn}
         onClick={() => {
-          deleteTaskAction({ id });
+          deleteTask({ id });
         }}
       >
         Delete task

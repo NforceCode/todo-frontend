@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import * as ActionCreators from 'actions/taskCreators';
-import Task from 'components/Task';
+import Task from 'components/TaskLoader/Task';
 import { useEffect, useState } from 'react';
 import { bindActionCreators } from 'redux';
 import { useLocation, useHistory } from 'react-router-dom';
@@ -30,19 +30,14 @@ const TaskLoader = props => {
     getTasksRequest(search);
   }, [search]);
 
-  const toggleTask = ({ target: { checked } }, id) => {
-    updateTaskRequest({ id, taskData: { isDone: checked } });
-  };
-  const changeDeadline = ({ target: { value } }, id) => {
-    updateTaskRequest({ id, taskData: { deadline: value } });
-  };
+  
   const taskQueryControls = ({ pageNumber, newLimit }) => {
     const { page = 1, limit = 5 } = search;
     const newPage = Number(page) + pageNumber;
 
     history.push(
       `/tasks?${qs.stringify({
-        page: newPage? newPage: page,
+        page: newPage? newPage: page, 
         limit: newLimit ? newLimit : limit,
       })}`
     );
@@ -60,9 +55,8 @@ const TaskLoader = props => {
           <Task
             key={task.id}
             task={task}
-            toggleTask={toggleTask}
-            changeDeadline={changeDeadline}
-            deleteTaskAction={deleteTaskRequest}
+            updateTask={updateTaskRequest}
+            deleteTask={deleteTaskRequest}
           />
         ))}
       </ul>
